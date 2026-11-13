@@ -1,0 +1,52 @@
+/* Namespaced v2 composition: no legacy monitor selectors or inherited transforms. */
+.site-wrapper.praxis-hero-detached {min-height:0;}
+#inicio.praxis-hero {width:100%;height:auto;min-height:0;display:block;position:relative;clip-path:none;padding:0;isolation:isolate;}
+.praxis-hero-viewport {position:relative;width:100%;height:100svh;overflow:hidden;background:var(--section-light);isolation:isolate;}
+.praxis-hero-artboard {position:absolute;left:0;top:0;width:1440px;height:805px;transform-origin:0 0;transform:scale(var(--art-scale,1));z-index:0;}
+.praxis-hero .hero-display-title {position:absolute;top:82px;margin:0;}
+.hero-sticky-text-layer {will-change:transform;}
+.hero-title-line1, .hero-title-line2 {will-change:transform, clip-path;}
+.hero-intro-copy {position:absolute;left:248px;top:650px;width:944px;margin:0;font-family:'Sora',sans-serif;font-size:11px;font-weight:300;line-height:1.6;text-align:justify;text-align-last:center;color:rgba(34,28,22,.5);hyphens:auto;}
+.hero-copy-word {position:relative;display:inline-block;vertical-align:baseline;white-space:nowrap;}
+.hero-copy-ghost {visibility:hidden;}
+.hero-copy-glyph {position:absolute;inset:0;overflow:hidden;text-align:left;text-align-last:left;white-space:nowrap;}
+.praxis-hero .rail-word {position:relative;}
+.rail-decode-ghost {visibility:hidden;}
+.rail-decode-glyph {position:absolute;inset:0;white-space:nowrap;overflow:hidden;}
+.praxis-hero .rail-dot {position:relative;}
+.rail-dot.is-decoding {background:transparent;}
+.rail-dot-decode-symbol {position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:10px/1 'Neue Machina',monospace;color:#141414;}
+@media(max-width:1024px){.hero-intro-copy {left:7vw;width:86vw;font-size:10px;line-height:1.5;}}
+.hero-char-slot {position:relative;display:inline-block;vertical-align:baseline;}
+.hero-char-slot.hero-char-space {white-space:pre;}
+.hero-char-ghost {visibility:hidden;user-select:none;}
+.hero-char-glyph {position:absolute;inset:0;display:inline-flex;align-items:center;justify-content:center;pointer-events:none;user-select:none;}
+.praxis-hero .hero-bg-layer {height:max(805px,calc(100svh / var(--art-scale,1)));background-color:var(--section-light);background-image:var(--section-noise);background-size:256px 256px;background-repeat:repeat;}
+.praxis-frame-canvas,.praxis-video-layer {position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:1;mix-blend-mode:normal;filter:none;backdrop-filter:none;transform:none;}
+.praxis-video-layer {z-index:1;overflow:hidden;visibility:hidden;}
+.praxis-video-layer video {position:absolute;left:0;top:0;display:block;width:1600px;height:900px;max-width:none;object-fit:cover;transform-origin:0 0;}
+.praxis-frame-canvas {z-index:2;}
+.praxis-debug :focus-visible {outline:3px solid #a3ff12;outline-offset:3px;}
+.praxis-hero-status {position:absolute;bottom:20px;left:24px;color:#212120;font:12px sans-serif;z-index:3;}
+.praxis-debug {position:fixed;z-index:10000;top:8px;right:8px;width:340px;max-height:85vh;overflow:auto;background:#151719ee;color:#e5e6df;padding:14px;font:11px/1.4 monospace;border:1px solid #a3ff12;}
+.praxis-debug label {display:block;margin:10px 0;}.praxis-debug input[type=range]{width:100%;}.praxis-debug button{padding:6px;border:1px solid #aaa;}.praxis-debug pre{white-space:pre-wrap;margin-top:10px;}
+@media(max-width:1024px){
+ .praxis-hero-artboard {width:100%;height:100%;transform:none;}
+ .praxis-hero .hero-bg-layer {height:100%;background-size:256px 256px;background-repeat:repeat;}
+ .praxis-hero .hero-display-title {top:140px;}
+}
+@media(prefers-reduced-motion:reduce){.praxis-hero .hero-rail{will-change:auto;}}
+@media(max-width:767px){.praxis-hero .hero-display-title{top:190px;}}
+
+/* Temporary ASCII presentation; existing frame geometry and video homography stay intact. */
+.praxis-ascii-overlay {position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;}
+.praxis-ascii-overlay[hidden] {display:none;}
+.praxis-ascii-sentinel {position:absolute;display:block;pointer-events:none;visibility:hidden;}
+.praxis-hero .praxis-video-layer {background:#101110;}
+.praxis-video-retry {position:absolute;left:0;top:0;width:1600px;height:900px;transform-origin:0 0;pointer-events:auto;color:#f3ede6;background:rgba(0,0,0,.45);font:500 40px sans-serif;cursor:pointer;}
+.praxis-video-retry[hidden] {display:none;}
+.praxis-video-retry:focus-visible {outline:6px solid #8efd3e;outline-offset:-10px;}
+
+/* One shared intensity preserves every mask and blur radius. Keep opacity on
+   the filter layers: a translucent ancestor isolates their backdrop in Chromium. */
+.bottom-progressive-blur .blur-layer {opacity:var(--praxis-hero-blur-intensity,1);}

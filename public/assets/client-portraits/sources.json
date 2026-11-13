@@ -1,0 +1,37 @@
+[
+  {
+    "file": "portrait-01.jpg",
+    "source": "https://randomuser.me/api/portraits/women/44.jpg",
+    "usage": "Retrato ilustrativo para composição visual; não identifica cliente real."
+  },
+  {
+    "file": "portrait-02.jpg",
+    "source": "https://randomuser.me/api/portraits/men/32.jpg",
+    "usage": "Retrato ilustrativo para composição visual; não identifica cliente real."
+  },
+  {
+    "file": "portrait-03.jpg",
+    "source": "https://randomuser.me/api/portraits/women/68.jpg",
+    "usage": "Retrato ilustrativo para composição visual; não identifica cliente real."
+  },
+  {
+    "file": "portrait-04.jpg",
+    "source": "https://randomuser.me/api/portraits/men/46.jpg",
+    "usage": "Retrato ilustrativo para composição visual; não identifica cliente real."
+  },
+  {
+    "file": "portrait-05.jpg",
+    "source": "https://randomuser.me/api/portraits/women/65.jpg",
+    "usage": "Retrato ilustrativo para composição visual; não identifica cliente real."
+  },
+  {
+    "file": "portrait-06.jpg",
+    "source": "https://randomuser.me/api/portraits/men/75.jpg",
+    "usage": "Retrato ilustrativo para composição visual; não identifica cliente real."
+  },
+  {
+    "file": "portrait-07.jpg",
+    "source": "https://randomuser.me/api/portraits/women/24.jpg",
+    "usage": "Retrato ilustrativo para composição visual; não identifica cliente real."
+  }
+]

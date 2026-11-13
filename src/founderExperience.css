@@ -1,0 +1,20 @@
+@font-face {
+  font-family:'Sora';
+  src:url('/fonts/sora/PraxisContour-ExtraBold.ttf') format('truetype');
+  font-style:normal;font-weight:800;font-display:swap;
+}
+.founder-experience-visual {display:block;width:100%;height:auto;aspect-ratio:625 / 647.777778;overflow:visible;}
+.founder-experience-number {font-family:'Sora',sans-serif;font-size:600px;font-weight:800;letter-spacing:-20px;}
+.founder-experience-filled {fill:#f3ede6;}
+.founder-experience-outline {fill:none;stroke:#f3ede6;stroke-width:.8px;vector-effect:non-scaling-stroke;}
+.founder-experience-caption {font-family:'Sora',sans-serif;font-size:42px;font-weight:800;letter-spacing:-1px;}
+.founder-experience-caption-outline {fill:none;stroke:#f3ede6;stroke-width:.8px;paint-order:stroke fill;}
+
+/* End the section at the existing photo edge, without moving its contents. */
+.sec2-right-portrait:has(.founder-experience-visual) {height:auto;}
+@media (min-width:1025px) {
+  .sec-value-prop:has(.founder-experience-visual) {height:757.777778px;}
+}
+@media (max-width:1024px) {
+  .sec-value-prop:has(.founder-experience-visual) {padding-bottom:0;}
+}

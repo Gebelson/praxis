@@ -1,0 +1,7 @@
+.section-accent-label {position:relative;}
+.section-accent-label-ghost {visibility:hidden;}
+.section-accent-label-glyph {position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+.footer-link-column a {position:relative;}
+.footer-link-column a::after {content:'';position:absolute;left:0;right:0;bottom:-3px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform 180ms cubic-bezier(.2,.75,.25,1);pointer-events:none;}
+.footer-link-column a:hover::after,.footer-link-column a:focus-visible::after {transform:scaleX(1);}
+@media(prefers-reduced-motion:reduce){.footer-link-column a::after{transition:none;}}

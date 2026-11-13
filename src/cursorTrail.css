@@ -1,0 +1,5 @@
+.cursor-trail-surface {isolation:isolate;}
+.cursor-trail-plane {position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none;}
+.cursor-trail-canvas {position:absolute;left:0;display:block;pointer-events:none;}
+.cursor-trail-noise {position:absolute;inset:0;z-index:1;background-image:var(--section-noise);background-repeat:repeat;background-size:256px 256px;pointer-events:none;}
+@media(prefers-reduced-motion:reduce),(pointer:coarse){.cursor-trail-plane{display:none;}}

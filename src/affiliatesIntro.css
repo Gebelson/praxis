@@ -1,0 +1,40 @@
+/* Center the affiliate introduction as one block, independent of later showcases. */
+.sec-affiliates .affiliates-top {
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;
+}
+.sec-affiliates .affiliates-top .affiliates-heading,
+.sec-affiliates .affiliates-top .affiliates-subtitle,
+.sec-affiliates .affiliates-top .affiliates-cta-btn {
+  position:relative;top:auto;left:auto;flex-shrink:0;margin:0;
+}
+.sec-affiliates .affiliates-top .affiliates-heading {width:100%;}
+.sec-affiliates .affiliates-top .affiliates-subtitle {width:min(760px,100%);}
+.sec-affiliates .affiliates-top .affiliates-cta-btn {width:248px;height:48px;}
+.sec-affiliates .affiliates-top .affiliates-steps-row {
+  position:relative;top:auto;left:auto;width:100%;height:auto;margin:32px 0 0;
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px;
+}
+.sec-affiliates .affiliates-top .aff-step {position:relative;top:auto;left:auto;width:auto;min-width:0;}
+.sec-affiliates .affiliates-top .aff-step-divider {top:0;height:100%;}
+.sec-affiliates .affiliates-top .divider-1 {left:calc(100% / 3 - 7px);}
+.sec-affiliates .affiliates-top .divider-2 {left:calc(200% / 3 + 7px);}
+@media(min-width:1025px) {
+  .sec-affiliates {
+    --aff-intro-height:max(660px,var(--aff-viewport-height,calc(100svh / var(--header-scale,1) - 67px)));
+    height:calc(2508px + var(--aff-intro-height) - 901px);
+  }
+  .sec-affiliates .affiliates-top {
+    height:var(--aff-intro-height);padding:60px 80px;
+  }
+  .sec-affiliates .affiliates-dark-band {top:var(--aff-intro-height);}
+  .sec-affiliates .affiliates-bottom-showcase {top:calc(var(--aff-intro-height) - 901px);}
+}
+@media(max-width:1024px) {
+  .sec-affiliates .affiliates-top {min-height:var(--aff-viewport-height,0px);padding:24px 0;}
+  .sec-affiliates .affiliates-top .affiliates-steps-row {gap:24px;}
+  .sec-affiliates .affiliates-top .aff-step-text {white-space:normal;}
+}
+@media(max-width:600px) {
+  .sec-affiliates .affiliates-top .affiliates-steps-row {grid-template-columns:minmax(0,1fr);gap:30px;margin-top:16px;}
+  .sec-affiliates .affiliates-top .aff-step-icon {margin-bottom:16px;}
+}
