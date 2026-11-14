@@ -15,7 +15,7 @@ class SectionAccents(unittest.TestCase):
     page.wait_for_timeout(1350)
     self.assertEqual(before,node.evaluate('e=>({width:e.offsetWidth,height:e.offsetHeight})'))
     self.assertEqual(node.get_attribute('data-accent-state'),'done')
-    self.assertTrue(node.evaluate('e=>[...e.querySelectorAll(".section-accent-label")].every(n=>n.lastElementChild.textContent===n.getAttribute("aria-label"))'))
+    self.assertTrue(node.evaluate('e=>[...e.querySelectorAll(".section-accent-label")].every(n=>n.lastElementChild.textContent===n.querySelector(".visually-hidden").textContent)'))
    old_runs=page.evaluate('window.PraxisSectionAccents.getState().filter(s=>s.type==="card").reduce((n,s)=>n+s.runs,0)')
    page.evaluate('window.scrollTo({top:0,behavior:"instant"})');page.wait_for_timeout(150)
    page.locator('.testimonial-card').first.evaluate('e=>e.scrollIntoView({block:"center",behavior:"instant"})')

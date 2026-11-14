@@ -11,7 +11,8 @@ export function initSectionAccents(){
     const ghost=document.createElement('span'),glyph=document.createElement('span');
     ghost.className='section-accent-label-ghost';ghost.textContent=text;ghost.setAttribute('aria-hidden','true');
     glyph.className='section-accent-label-glyph';glyph.textContent=text;glyph.setAttribute('aria-hidden','true');
-    element.setAttribute('aria-label',text);element.classList.add('section-accent-label');element.replaceChildren(ghost,glyph);
+    const accessible=document.createElement('span');accessible.className='visually-hidden';accessible.textContent=text;
+    element.removeAttribute('aria-label');element.classList.add('section-accent-label');element.replaceChildren(accessible,ghost,glyph);
     const item={element,text,aria,glyph};labels.push(item);return item;
   }
   function register(selector,type,getLabels=()=>[]){

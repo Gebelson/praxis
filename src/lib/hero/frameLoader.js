@@ -6,6 +6,7 @@ export class FrameLoader {
     this.blobs=new Map();this.decoded=new Map();this.failed=new Set();
     this.queue=[];this.pending=new Set();this.active=0;this.target=0;
     this.direction=1;this.runway=new Set();
+    this.sequence=true;
     this.destroyed=false;this.abort=new AbortController();
   }
   request(index) {
@@ -14,11 +15,12 @@ export class FrameLoader {
     // Reserve most of the bounded cache ahead of travel. Decode it while
     // idle, rather than waiting until a frame is already due on screen.
     const ahead=Math.max(1,this.limit-4),order=[index];
-    for(let n=1;n<=ahead;n++)order.push(index+n*this.direction);
-    for(let n=1;n<=3;n++)order.push(index-n*this.direction);
+    if(this.sequence){
+      for(let n=1;n<=ahead;n++)order.push(index+n*this.direction);
+      for(let n=1;n<=3;n++)order.push(index-n*this.direction);
+    }
     this.runway=new Set(order.filter(i=>i>=0&&i<89));
-    order.push(0,11,22,33,44,55,66,77,88);
-    for(let i=0;i<89;i++)order.push(i);
+    if(this.sequence){order.push(0,11,22,33,44,55,66,77,88);for(let i=0;i<89;i++)order.push(i);}
     this.queue=[...new Set(order)].filter(i=>i>=0&&i<89&&!this.failed.has(i)&&!this.pending.has(i)&&(!this.blobs.has(i)||this.runway.has(i)&&!this.decoded.has(i)));
     this.pump();
   }

@@ -4,7 +4,7 @@ export class FrameCanvas {
     this.canvas.setAttribute('role','img');this.canvas.setAttribute('aria-label','Monitor do Praxis: sequência fotográfica controlada pela rolagem, exibindo o showreel Word Films.');
     host.append(this.canvas);this.ctx=this.canvas.getContext('2d',{alpha:true});
   }
-  resize(w,h){this.width=w;this.height=h;this.dpr=Math.min(window.devicePixelRatio||1,3);this.canvas.width=Math.round(w*this.dpr);this.canvas.height=Math.round(h*this.dpr);}
+  resize(w,h){this.width=w;this.height=h;this.dpr=Math.min(window.devicePixelRatio||1,w<=1024?2:3);this.canvas.width=Math.round(w*this.dpr);this.canvas.height=Math.round(h*this.dpr);}
   draw(image,layout,quad,debug){
     const c=this.ctx;c.setTransform(this.dpr,0,0,this.dpr,0,0);c.clearRect(0,0,this.width,this.height);
     c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';

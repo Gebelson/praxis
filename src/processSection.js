@@ -26,7 +26,7 @@ export function initProcessSection() {
   const scale=()=>section.getBoundingClientRect().width/section.offsetWidth||1;
 
   function updateSticky() {
-    if(innerWidth<640){sticky.style.transform='';return;}
+    if(innerWidth<=1024){sticky.style.transform='';return;}
     const ratio=scale(),top=left.getBoundingClientRect().top;
     const height=sticky.getBoundingClientRect().height/ratio;
     const timelineOffset=(timeline.getBoundingClientRect().top-top)/ratio;
@@ -61,7 +61,7 @@ export function initProcessSection() {
   function layout() {
     if(destroyed)return;
     const ratio=scale();
-    if(innerWidth>=640){
+    if(innerWidth>1024){
       const css=getComputedStyle(section),padding=parseFloat(css.paddingTop)||0,base=parseFloat(css.getPropertyValue('--process-base-padding'))||padding;
       const title=steps[0].querySelector('.process-step-title').getBoundingClientRect(),body=steps[0].querySelector('.process-step-body').getBoundingClientRect();
       const contentOffset=((title.top+body.bottom)/2-section.getBoundingClientRect().top)/ratio-padding;

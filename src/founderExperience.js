@@ -4,6 +4,8 @@ const NS='http://www.w3.org/2000/svg';
 export function initFounderExperience(host=document.querySelector('.sec2-right-portrait')) {
   if(!host||host.founderExperience)return host?.founderExperience;
   const uid='founder-experience';
+  const mobileImage=matchMedia('(max-width:1024px)');
+  const portraitSource=()=>mobileImage.matches?'/assets/founder-portrait-rim-light-mobile.webp':'/assets/founder-portrait-rim-light.webp';
   host.innerHTML=`<svg class="founder-experience-visual" viewBox="0 0 625 647.777778" role="img" aria-labelledby="${uid}-title" xmlns="${NS}">
     <title id="${uid}-title"></title>
     <defs>
@@ -18,13 +20,15 @@ export function initFounderExperience(host=document.querySelector('.sec2-right-p
       <use href="#${uid}-number"/>
       <use href="#${uid}-caption"/>
     </g>
-    <image href="/assets/founder-portrait-rim-light.webp" x="126" y="30" width="480" height="617.777778" preserveAspectRatio="xMidYMid meet"/>
+    <image href="${portraitSource()}" x="126" y="30" width="480" height="617.777778" preserveAspectRatio="xMidYMid meet"/>
     <g class="founder-experience-outline-layer" aria-hidden="true">
       <g mask="url(#${uid}-outline-guard)"><use class="founder-experience-outline" href="#${uid}-number"/></g>
       <use class="founder-experience-caption-outline" href="#${uid}-caption"/>
     </g>
   </svg>`;
   const number=host.querySelector('.founder-experience-number'),title=host.querySelector('title'),caption=host.querySelector('.founder-experience-caption');
+  const updatePortrait=()=>host.querySelector('image').setAttribute('href',portraitSource());
+  mobileImage.addEventListener('change',updatePortrait);
   const measure=document.createElement('canvas').getContext('2d');
   measure.font='800 600px "Sora"';measure.letterSpacing='-20px';
   let destroyed=false,ready=false,last='',target=12,captionMetrics=null;
@@ -47,7 +51,7 @@ export function initFounderExperience(host=document.querySelector('.sec2-right-p
     last='';if(!ready)return;
     paint(target);host.dataset.experienceState='completed';
   }
-  const api={setValue,destroy(){destroyed=true;delete host.founderExperience;}};
+  const api={setValue,destroy(){destroyed=true;mobileImage.removeEventListener('change',updatePortrait);delete host.founderExperience;}};
   host.founderExperience=api;target=Number(host.dataset.experienceYears||12);
   Promise.all([document.fonts.load('800 600px "Sora"'),document.fonts.ready]).then(()=>{
     if(destroyed)return;ready=true;

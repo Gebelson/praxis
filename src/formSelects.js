@@ -67,7 +67,7 @@ export function initFormSelects(root){
         if(!open)show();const found=options.findIndex(option=>!option.disabled&&option.textContent.toLocaleLowerCase().startsWith(prefix.toLocaleLowerCase()));if(found>=0){highlight(found);nodes[found].scrollIntoView({block:'nearest'});}
       }
     });
-    nodes.forEach((node,index)=>{listen(node,'pointerdown',event=>event.preventDefault());listen(node,'click',()=>choose(index));listen(node,'pointermove',()=>{if(!options[index].disabled)highlight(index);});});
+    nodes.forEach((node,index)=>{listen(node,'pointerdown',event=>{if(event.pointerType==='mouse')event.preventDefault();});listen(node,'click',()=>choose(index));listen(node,'pointermove',()=>{if(!options[index].disabled)highlight(index);});});
     listen(document,'pointerdown',event=>{if(open&&!wrapper.contains(event.target)&&!menu.contains(event.target))close();});
     listen(select,'change',sync);if(select.form)listen(select.form,'reset',()=>queueMicrotask(sync));
     if(phoneMode){

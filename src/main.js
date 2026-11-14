@@ -1,4 +1,5 @@
 import { initSiteEnding } from './siteEnding.js';
+import { initMobileUx } from './mobileUx.js';
 import { initValuePropSnap } from './valuePropSnap.js';
 import { initFaqAccordion } from './faqAccordion.js';
 import { initSectionNavigation } from './sectionNavigation.js';
@@ -38,6 +39,7 @@ import { initLangSelector } from './langSelector.js';
 
 
 document.addEventListener('DOMContentLoaded', () => {
+  initMobileUx();
   initSectionNavigation();
   initFounderExperience();
   // Inicializa o bloco de confiança (avatares e prova social)

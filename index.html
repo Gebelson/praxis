@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="/src/siteEnding.css" />
 </head>
 <body>
+  <a class="skip-content-link" href="#portfolio">Pular para o conteúdo</a>
   <!-- Header Flutuante com Glassmorphism -->
   <header class="site-header" id="siteHeader">
     <div class="site-header-inner">
@@ -178,7 +179,7 @@
           <div class="rating-block">
             <div class="rating-top-row">
               <span class="rating-line" aria-hidden="true"></span>
-              <div class="rating-stars" aria-label="5 de 5 estrelas">
+              <div class="rating-stars" role="img" aria-label="5 de 5 estrelas">
                 <svg viewBox="0 0 24 24" width="22" height="22" fill="#F1ECE6"><path d="M12 1.5l3.09 6.26L22 8.77l-5 4.87 1.18 6.88L12 17.27l-6.18 3.25L7 13.64 2 8.77l6.91-1.01L12 1.5z"/></svg>
                 <svg viewBox="0 0 24 24" width="22" height="22" fill="#F1ECE6"><path d="M12 1.5l3.09 6.26L22 8.77l-5 4.87 1.18 6.88L12 17.27l-6.18 3.25L7 13.64 2 8.77l6.91-1.01L12 1.5z"/></svg>
                 <svg viewBox="0 0 24 24" width="22" height="22" fill="#F1ECE6"><path d="M12 1.5l3.09 6.26L22 8.77l-5 4.87 1.18 6.88L12 17.27l-6.18 3.25L7 13.64 2 8.77l6.91-1.01L12 1.5z"/></svg>
@@ -200,7 +201,7 @@
          ======================================================================= -->
     <section id="portfolio" class="sec-portfolio" aria-label="Portfólio de Projetos">
       <!-- Galeria 3D interativa de projetos com duas fileiras sincronizadas ao scroll -->
-      <div id="projectsGallery" class="portfolio-wall projects-gallery" aria-label="Galeria 3D de Projetos"></div>
+      <div id="projectsGallery" class="portfolio-wall projects-gallery" role="region" aria-label="Galeria 3D de Projetos"></div>
 
       <!-- Marca d'água central PORTFOLIO -->
       <div class="portfolio-watermark" aria-hidden="true">PORTFOLIO</div>

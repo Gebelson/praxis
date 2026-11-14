@@ -4,7 +4,8 @@ export class HeroCopyDecoder {
     this.element=element;if(!element)return;
     this.original=element.textContent;this.words=[];this.raf=0;this.timer=0;this.cycles=0;this.entered=false;this.visible=false;this.destroyed=false;
     this.motion=matchMedia('(prefers-reduced-motion: reduce)');
-    element.setAttribute('aria-label',this.original);element.textContent='';
+    element.textContent='';
+    const accessible=document.createElement('span');accessible.className='visually-hidden';accessible.textContent=this.original;element.append(accessible);
     for(const token of this.original.split(/(\s+)/)){
       if(!token.trim()){element.append(document.createTextNode(token));continue;}
       const word=document.createElement('span');word.className='hero-copy-word';word.setAttribute('aria-hidden','true');

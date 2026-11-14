@@ -46,7 +46,7 @@ export class PraxisHero {
     }});
     this.copyDecoder=new HeroCopyDecoder(this.textLayer.querySelector('.hero-intro-copy'));
     this.destroyRailsDecoder=initHeroRailsDecoder(this.artboard);
-    document.fonts.ready.then(()=>{if(this.alive)layoutHeroCopy(this.artboard,this.viewport,this.headerInset||0);});
+    document.fonts.ready.then(()=>{if(this.alive){this.sizeKey='';this.configure();}});
     this.scrollHandler=()=>this.updateRetention();
     window.addEventListener('scroll',this.scrollHandler,{passive:true});
     this.resize=()=>this.configure();this.motionQuery.addEventListener('change',this.resize);
@@ -63,8 +63,8 @@ export class PraxisHero {
   }
   configure(){
     if(!this.motion||!this.alive)return;
-    const width=document.documentElement.clientWidth,height=window.innerHeight;
-    const staticMode=width<768||this.motionQuery.matches;
+    const width=document.documentElement.clientWidth;let height=window.innerHeight;
+    const staticMode=width<=1024||this.motionQuery.matches;
     const key=`${width}/${height}/${devicePixelRatio}/${staticMode}`;if(key===this.sizeKey)return;this.sizeKey=key;
     // Refresh restores the pin's captured inline height. Recreate only our
     // trigger on real viewport/motion changes, before applying new dimensions.
@@ -72,11 +72,14 @@ export class PraxisHero {
     this.width=width;this.height=height;this.staticMode=staticMode;
     this.headerInset=Math.max(0,document.getElementById('siteHeader')?.getBoundingClientRect().bottom||0);
     this.loader.limit=width<768?4:16;this.loader.evict();
+    this.loader.sequence=!staticMode;
     this.viewport.style.height=`${height}px`;
     this.artboard.style.setProperty('--art-scale',width>1024?width/1440:1);
-    this.surface.resize(width,height);this.lastKey='';
+    const mobile=layoutHeroCopy(this.artboard,this.viewport,this.headerInset,this.corners.frames['00000']);
+    this.mobileLayout=mobile?.frame||null;
+    if(mobile){height=mobile.height;this.height=height;this.viewport.style.height=`${height}px`;}
+    this.surface.resize(width,height);this.lastKey='';this.requested=-1;
     this.intro.resize(width,height,this.surface.dpr);
-    layoutHeroCopy(this.artboard,this.viewport,this.headerInset);
     void this.video.setReducedMotion(this.motionQuery.matches);
     this.intro.setReducedMotion(this.motionQuery.matches);
     if(staticMode){this.trigger?.kill(true);this.trigger=null;this.progress=0;if(this.textLayer)this.textLayer.style.transform='';}
@@ -112,7 +115,7 @@ export class PraxisHero {
   render(){
     if(!this.motion)return;
     this.updateBottomBlur(this.manual===null?this.progress:this.manual/88);
-    const target=this.manual??(this.staticMode?44:frameFromProgress(this.progress));
+    const target=this.manual??(this.staticMode?(this.width<=1024?0:44):frameFromProgress(this.progress));
     if(target!==this.requested){this.requested=target;this.loader.request(target);}
     // A requested compressed frame may have arrived while a different target
     // was active; schedule its decode without refetching the compressed blob.
@@ -120,7 +123,7 @@ export class PraxisHero {
     const actual=this.loader.nearest(target);
     if(actual<0){if(this.loader.failed.size===89)this.status.textContent='Imagens do monitor indisponíveis.';return;}
     const progress=this.manual===null?this.progress:target/88;
-    const layout=layoutAtProgress(this.motion,progress,this.width,this.height,this.staticMode,this.headerInset,this.corners.frames[String(actual).padStart(5,'0')],this.desk.frames[actual]);
+    const layout=this.mobileLayout||layoutAtProgress(this.motion,progress,this.width,this.height,this.staticMode,this.headerInset,this.corners.frames[String(actual).padStart(5,'0')],this.desk.frames[actual]);
     const corners=viewportCorners(this.corners.frames[String(actual).padStart(5,'0')],layout);
     const key=[actual,layout.scale,layout.x,layout.y,Boolean(this.showCorners)].join('/');
     if(key!==this.lastKey){
