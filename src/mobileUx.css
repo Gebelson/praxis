@@ -127,8 +127,12 @@
   .sec-affiliates .aff-step-text {font-size:16px;line-height:1.5;}
   .sec-affiliates .affiliates-cta-btn {min-height:52px;}
   .ending-signature.ending-meta-divider {padding:20px 24px;min-height:0;}
-  .site-footer {padding-top:52px;}
-  .site-footer .footer-info {row-gap:30px;}
+  .site-footer {display:flex;flex-direction:column;min-height:calc(100svh - var(--footer-header-height,64px));min-height:calc(100dvh - var(--footer-header-height,64px));padding-top:clamp(28px,6svh,52px);}
+  .site-footer .footer-info {flex-shrink:0;min-width:0;}
+  .site-footer .footer-about {min-width:0;}
+  .site-footer .footer-about p {overflow-wrap:break-word;}
+  .site-footer .footer-wordmark {flex-shrink:0;margin-top:auto;}
+  .site-footer .footer-info {row-gap:clamp(20px,3.5svh,30px);}
   .site-footer .footer-meta {margin-top:36px;margin-bottom:16px;}
   .site-footer .footer-link-column {gap:0;}
   .site-footer .footer-link-column a {display:flex;align-items:center;min-height:44px;}
@@ -163,4 +167,10 @@
   .sec-process .cta-banner-card .cta-banner-content {gap:20px;}
   .sec-process .cta-banner-subtitle {font-size:15px;line-height:1.5;}
   .sec-process .cta-copy-lead {font-size:17px;margin-bottom:12px;}
+}
+
+@media(max-width:600px) and (max-height:700px){
+  .site-footer .footer-about p {font-size:14px;line-height:1.5;}
+  .site-footer .footer-brand {margin-bottom:12px;}
+  .site-footer .footer-meta {margin-top:24px;margin-bottom:12px;}
 }

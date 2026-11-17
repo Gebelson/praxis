@@ -24,7 +24,7 @@ export function initSiteEnding() {
   if(wordmark){
     const ink=wordmark.querySelector('.footer-wordmark-ink');
     const measure=document.createElement('canvas').getContext('2d');
-    let previousWidth=0;
+    let previousWidth=0,fitFrame=0;
     const fit=()=>{
       const label=window.matchMedia('(max-width:1024px)').matches?'PRXS':'PRAXIS';
       if(ink.textContent!==label){ink.textContent=label;previousWidth=0;}
@@ -50,9 +50,10 @@ export function initSiteEnding() {
       wordmark.style.marginBottom=`-${Math.max(0,lineHeight-baseline-m.actualBoundingBoxDescent)}px`;
       layout();
     };
-    const observer=new ResizeObserver(fit);
-    document.fonts.ready.then(()=>{if(root.siteEnding){observer.observe(wordmark);fit();}});
-    cleanups.push(()=>observer.disconnect());
+    const scheduleFit=()=>{if(!fitFrame)fitFrame=requestAnimationFrame(()=>{fitFrame=0;fit();});};
+    const observer=new ResizeObserver(scheduleFit);
+    document.fonts.ready.then(()=>{if(root.siteEnding){observer.observe(wordmark);scheduleFit();}});
+    cleanups.push(()=>{observer.disconnect();cancelAnimationFrame(fitFrame);});
   }
   const tabs=[...root.querySelectorAll('[data-partner-tab]')],panels=[...root.querySelectorAll('[data-partner-panel]')];
   function select(tab,focus=false){
