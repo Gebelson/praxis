@@ -1,3 +1,4 @@
+import {changeLanguage} from './i18n/index.js';
 /**
  * PRAXIS — Seletor de Idioma Refinado com Animação Fluida e Acessibilidade
  * 
@@ -72,6 +73,7 @@ export function initLangSelector() {
     }
 
     closeDropdown(true);
+    changeLanguage(option.id.replace('lang-opt-',''));
   }
 
   // Click no botão para alternar

@@ -1,11 +1,12 @@
+import {t} from './i18n/index.js';
 import './formSelects.css';
 
 export function initFormSelects(root){
   const cleanups=[];
   const phone=root.querySelector('.phone-prefix-btn');
   if(phone){
-    const dial=document.createElement('select');dial.id='selectDial';dial.name='codigoPais';dial.className='field-select';dial.dataset.phonePrefix='true';dial.setAttribute('aria-label','Código de país do telefone');
-    for(const [code,country] of [['+55','Brasil'],['+351','Portugal'],['+1','Estados Unidos / Canadá'],['+44','Reino Unido'],['+34','Espanha'],['+33','França'],['+54','Argentina']])dial.append(new Option(`${country} (${code})`,code));
+    const dial=document.createElement('select');dial.id='selectDial';dial.name='codigoPais';dial.className='field-select';dial.dataset.phonePrefix='true';dial.setAttribute('aria-label',t('Código de país do telefone'));
+    for(const [code,country] of [['+55','Brasil'],['+351','Portugal'],['+1','Estados Unidos / Canadá'],['+44','Reino Unido'],['+34','Espanha'],['+33','França'],['+54','Argentina']])dial.append(new Option(`${t(country)} (${code})`,code));
     dial.phoneTemplate=phone;phone.before(dial);phone.hidden=true;phone.parentElement.classList.add('has-phone-prefix');
     cleanups.push(()=>{dial.remove();phone.hidden=false;phone.parentElement.classList.remove('has-phone-prefix');});
   }
@@ -28,7 +29,7 @@ export function initFormSelects(root){
     const listen=(target,event,handler,options)=>{target.addEventListener(event,handler,options);listeners.push(()=>target.removeEventListener(event,handler,options));};
     function highlight(index){active=index;nodes.forEach((node,i)=>node.dataset.active=String(i===index));button.setAttribute('aria-activedescendant',nodes[index].id);}
     function sync(){
-      if(phoneMode){button.querySelector('.phone-prefix-value').textContent=select.value;button.setAttribute('aria-label',`Código de país: ${options[select.selectedIndex]?.textContent||''}`);}
+      if(phoneMode){button.querySelector('.phone-prefix-value').textContent=select.value;button.setAttribute('aria-label',`${t('Código de país')}: ${options[select.selectedIndex]?.textContent||''}`);}
       else button.textContent=options[select.selectedIndex]?.textContent||'';
       button.disabled=select.disabled;nodes.forEach((node,i)=>node.setAttribute('aria-selected',String(i===select.selectedIndex)));
     }

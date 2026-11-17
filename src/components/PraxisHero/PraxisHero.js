@@ -33,7 +33,7 @@ export class PraxisHero {
     this.viewport.append(this.artboard);section.append(this.viewport);
     this.surface=new FrameCanvas(this.viewport);
     this.video=new ScreenVideo(this.viewport,BASE,this.motionQuery.matches);
-    this.intro=new AsciiIntro({host:this.viewport,surface:this.surface,video:this.video,reduced:this.motionQuery.matches,awaitTitle:true,onState:()=>this.schedule()});
+    this.intro=new AsciiIntro({host:this.viewport,surface:this.surface,video:this.video,reduced:this.motionQuery.matches,awaitTitle:window.matchMedia('(min-width:1025px)').matches,onState:()=>this.schedule()});
     this.loader=new FrameLoader({base:`${BASE}/frames-hd-line-mask`,limit:16,onChange:()=>this.schedule()});
     this.debug=createDebug(this);
     this.textLayer=this.artboard.querySelector('.hero-sticky-text-layer');
@@ -64,6 +64,12 @@ export class PraxisHero {
   configure(){
     if(!this.motion||!this.alive)return;
     const width=document.documentElement.clientWidth;let height=window.innerHeight;
+    // Browser chrome changes height while scrolling. Keep the mobile scene
+    // stable until the device width changes (rotation or a real layout resize).
+    if(width<=1024){
+      if(this.mobileViewportWidth!==width){this.mobileViewportWidth=width;this.mobileViewportHeight=height;}
+      height=this.mobileViewportHeight;
+    }else{this.mobileViewportWidth=null;this.mobileViewportHeight=null;}
     const staticMode=width<=1024||this.motionQuery.matches;
     const key=`${width}/${height}/${devicePixelRatio}/${staticMode}`;if(key===this.sizeKey)return;this.sizeKey=key;
     // Refresh restores the pin's captured inline height. Recreate only our
@@ -75,7 +81,7 @@ export class PraxisHero {
     this.loader.sequence=!staticMode;
     this.viewport.style.height=`${height}px`;
     this.artboard.style.setProperty('--art-scale',width>1024?width/1440:1);
-    const mobile=layoutHeroCopy(this.artboard,this.viewport,this.headerInset,this.corners.frames['00000']);
+    const mobile=layoutHeroCopy(this.artboard,this.viewport,this.headerInset,this.corners.frames['00000'],height);
     this.mobileLayout=mobile?.frame||null;
     if(mobile){height=mobile.height;this.height=height;this.viewport.style.height=`${height}px`;}
     this.surface.resize(width,height);this.lastKey='';this.requested=-1;

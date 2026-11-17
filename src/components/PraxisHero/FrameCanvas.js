@@ -1,7 +1,8 @@
+import {t} from '../../i18n/index.js';
 export class FrameCanvas {
   constructor(host){
     this.canvas=document.createElement('canvas');this.canvas.className='praxis-frame-canvas';
-    this.canvas.setAttribute('role','img');this.canvas.setAttribute('aria-label','Monitor do Praxis: sequência fotográfica controlada pela rolagem, exibindo o showreel Word Films.');
+    this.canvas.setAttribute('role','img');this.canvas.setAttribute('aria-label',t('Monitor do Praxis: sequência fotográfica controlada pela rolagem, exibindo o showreel Word Films.'));
     host.append(this.canvas);this.ctx=this.canvas.getContext('2d',{alpha:true});
   }
   resize(w,h){this.width=w;this.height=h;this.dpr=Math.min(window.devicePixelRatio||1,w<=1024?2:3);this.canvas.width=Math.round(w*this.dpr);this.canvas.height=Math.round(h*this.dpr);}

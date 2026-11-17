@@ -1,3 +1,4 @@
+import {t} from '../../i18n/index.js';
 import { homography, cssMatrix, expandQuad } from '../../lib/hero/geometry.js';
 import { VideoPlaybackGate } from '../../lib/hero/videoPlaybackGate.js';
 export class ScreenVideo {
@@ -8,7 +9,7 @@ export class ScreenVideo {
     this.video.style.visibility='hidden';
     this.video.setAttribute('aria-label','Showreel Word Films');this.video.src=`${base}/word-films-loop.mp4`;
     this.retry=document.createElement('button');this.retry.type='button';this.retry.className='praxis-video-retry';
-    this.retry.textContent='Reproduzir vídeo';this.retry.hidden=true;
+    this.retry.textContent=t('Reproduzir vídeo');this.retry.hidden=true;
     this.layer.append(this.video,this.retry);host.append(this.layer);
     this.video.addEventListener('error',()=>{this.error='Vídeo indisponível';});
     this.gate=new VideoPlaybackGate(this.video,{reduced,

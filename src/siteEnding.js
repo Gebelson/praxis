@@ -1,3 +1,4 @@
+import {t,getLanguage} from './i18n/index.js';
 import { initBudgetLogoMotion } from './budgetLogoMotion.js';
 import { initFooterCover } from './footerCover.js';
 import { initContactCardFollow } from './contactCardFollow.js';
@@ -25,6 +26,8 @@ export function initSiteEnding() {
     const measure=document.createElement('canvas').getContext('2d');
     let previousWidth=0;
     const fit=()=>{
+      const label=window.matchMedia('(max-width:1024px)').matches?'PRXS':'PRAXIS';
+      if(ink.textContent!==label){ink.textContent=label;previousWidth=0;}
       const width=wordmark.clientWidth;
       if(!width||width===previousWidth)return;
       previousWidth=width;measure.font='100px Vogjer';
@@ -70,7 +73,7 @@ export function initSiteEnding() {
     });
   });
   const number=root.querySelector('#affiliateProjectValue'),range=root.querySelector('#affiliateProjectRange'),output=root.querySelector('#affiliateCommission');
-  const currency=new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
+  const currency=new Intl.NumberFormat({pt:'pt-BR',en:'en-US',es:'es-ES',zh:'zh-CN',fr:'fr-FR','pt-PT':'pt-PT'}[getLanguage()],{style:'currency',currency:'BRL'});
   function calculate(source){
     const valid=source.value.trim()!==''&&Number.isFinite(Number(source.value))&&Number(source.value)>=0&&Number(source.value)<=50000;
     number.setAttribute('aria-invalid',String(!valid));
@@ -82,7 +85,7 @@ export function initSiteEnding() {
   if(number&&range&&output){listen(number,'input',()=>calculate(number));listen(range,'input',()=>calculate(range));calculate(number);}
   root.querySelectorAll('[data-affiliate-interest]').forEach(link=>listen(link,'click',()=>{
     const message=document.getElementById('textareaMensagem');
-    if(message&&!message.value.trim()){message.value='Quero conhecer o programa de afiliados da Praxis.';message.dispatchEvent(new Event('input',{bubbles:true}));}
+    if(message&&!message.value.trim()){message.value=t('Quero conhecer o programa de afiliados da Praxis.');message.dispatchEvent(new Event('input',{bubbles:true}));}
   }));
   root.querySelectorAll('.faq-card').forEach((card,index)=>{
     const button=card.querySelector('.faq-trigger'),answer=card.querySelector('.faq-answer');

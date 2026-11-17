@@ -1,3 +1,4 @@
+import {initLanguage,restoreLanguageDraft,t} from './i18n/index.js';
 import { initSiteEnding } from './siteEnding.js';
 import { initMobileUx } from './mobileUx.js';
 import { initValuePropSnap } from './valuePropSnap.js';
@@ -38,7 +39,8 @@ import { initCtaBannerAnimation } from './ctaBannerAnimation.js';
 import { initLangSelector } from './langSelector.js';
 
 
-document.addEventListener('DOMContentLoaded', () => {
+function initializePraxis(){
+  initLanguage();
   initMobileUx();
   initSectionNavigation();
   initFounderExperience();
@@ -87,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
     contactForm.addEventListener('submit', (e) => {
       e.preventDefault();
       if (formFeedback) {
-        formFeedback.textContent = 'Mensagem registrada localmente! (Envio aguarda integração de backend)';
+        formFeedback.textContent = t('Mensagem registrada localmente! (Envio aguarda integração de backend)');
         formFeedback.hidden = false;
       }
     });
@@ -256,7 +258,13 @@ document.addEventListener('DOMContentLoaded', () => {
   initTestimonialInteraction();
   initAffiliatesSnap();
   initSiteEnding();
+  restoreLanguageDraft();
   initValuePropSnap();
   initSectionAccents();
 
-});
+  document.documentElement.dataset.praxisReady='true';
+  window.dispatchEvent(new Event('praxis:ready'));
+}
+
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initializePraxis,{once:true});
+else initializePraxis();

@@ -287,6 +287,16 @@ ul, ol {
   font-weight: 400;
 }
 
+/* Match the final desktop width even while the module graph is loading. */
+/* The glass header must sample the light hero backing during bootstrap. */
+html.praxis-booting,html.praxis-booting body {
+  background-color: var(--section-light, #f3ede6);
+}
+
+html:not([data-praxis-ready]) .site-wrapper {
+  transform: scale(var(--startup-scale, 1));
+}
+
 .site-wrapper {
   width: 1440px;
   min-height: 15761px;
@@ -510,6 +520,12 @@ ul, ol {
   outline: 2px solid rgba(241, 236, 230, 0.6);
   outline-offset: 2px;
 }
+
+/* Reserve the Portuguese label width in every language; keep the caret fixed. */
+.lang-text {display:inline-grid;}
+.lang-text::before {content:'PORTUGUÊS(BR)';visibility:hidden;font-weight:700;grid-area:1 / 1;}
+.lang-text strong {grid-area:1 / 1;justify-self:start;transform:translateY(1px);}
+@media(max-width:1024px){.site-header .lang-btn::before {transform:translateY(1px);}}
 
 .lang-btn strong {
   font-weight: 700;
@@ -3625,6 +3641,12 @@ ul, ol {
 
   .brand-logo {
     position: static;
+    gap: 5px;
+  }
+
+  .brand-wordmark {
+    font-size: 18px;
+    margin-left: 0;
   }
 
   .main-nav {
@@ -4709,8 +4731,8 @@ ul, ol {
 }
 
 /* Keep the scrollbar below the viewport blur so its lower end is softened too. */
-html.has-page-scrollbar {scrollbar-width:none;}
-html.has-page-scrollbar::-webkit-scrollbar {display:none;}
+html.praxis-booting,html.has-page-scrollbar {scrollbar-width:none;}
+html.praxis-booting::-webkit-scrollbar,html.has-page-scrollbar::-webkit-scrollbar {display:none;}
 .page-scrollbar {
   position:fixed;right:3px;width:12px;z-index:39;
   touch-action:none;user-select:none;cursor:pointer;outline:none;
@@ -4729,3 +4751,43 @@ html.has-page-scrollbar::-webkit-scrollbar {display:none;}
 @media (prefers-reduced-motion:reduce) {
   .page-scrollbar-thumb {transition:none;}
 }
+
+/* Keep language-option text two pixels lower without moving its hit area. */
+.lang-dropdown li {padding-top:7px;padding-bottom:3px;}
+
+/* CJK uses a complete local font stack; the Latin display face has no Han glyphs. */
+html[lang="zh-CN"] .hero-title-line1,html[lang="zh-CN"] .hero-title-line2 {
+  font-family:'Noto Sans CJK SC','Microsoft YaHei','PingFang SC',sans-serif;
+  font-weight:800;
+}
+html[lang="zh-CN"] .hero-intro-copy {line-break:auto;word-break:normal;}
+.lang-dropdown {max-height:min(320px,70svh);overflow-y:auto;}
+
+/* Longer French copy fits the approved value-proposition column. */
+html[lang="fr"] .sec2-left-content .rating-caption {
+  font-size:14px;line-height:1.35;white-space:normal;
+}
+html[lang="fr"] .sec2-left-content .rating-block {min-width:0;max-width:100%;}
+@media(min-width:1025px){
+  html[lang="fr"] .sec2-left-content :is(.sec2-h-line1,.sec2-h-line2,.sec2-h-line3) {font-size:42px;}
+  html[lang="fr"] .sec2-left-content .sec2-h-line2 .serif-italic {font-size:53px;}
+  html[lang="fr"] .sec2-left-content .sec2-checks {top:440px;}
+  html[lang="fr"] .sec2-left-content .sec2-social-proof {top:500px;width:600px;height:auto;gap:20px;}
+  html[lang="fr"] .sec2-left-content .rating-block {flex:0 1 auto;}
+}
+@media(max-width:1024px){
+  html[lang="fr"] .sec2-left-content :is(.sec2-h-line1,.sec2-h-line2,.sec2-h-line3) {font-size:clamp(26px,5.2vw,43px);}
+  html[lang="fr"] .sec2-left-content .sec2-h-line2 .serif-italic {font-size:clamp(31px,6.2vw,51px);}
+}
+
+/* The caption sets the badge width; the rule fills only the space before stars. */
+.sec2-social-proof .rating-block {width:max-content;max-width:100%;min-width:0;}
+.sec2-social-proof .rating-line {min-width:0;}
+.sec2-social-proof .rating-caption {white-space:normal;}
+
+/* Distribute benefits across the measured heading, including translated copy. */
+.sec2-left-content .sec2-checks {
+  left:var(--checks-left,81px);width:var(--checks-width,600px);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;height:auto;
+}
+.sec2-left-content .sec2-checks .check-item {position:static;}

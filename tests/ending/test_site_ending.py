@@ -27,11 +27,11 @@ class SiteEnding(unittest.TestCase):
  def test_faq_all_answers_expand_without_overlap_and_keyboard(self):
   page=self.open();cards=page.locator('.faq-card');self.assertEqual(cards.count(),10)
   for i in range(cards.count()):
-   button=cards.nth(i).locator('button');button.click();self.assertEqual(button.get_attribute('aria-expanded'),'true');answer=cards.nth(i).locator('.faq-answer');self.assertTrue(answer.is_visible());self.assertEqual(button.get_attribute('aria-controls'),answer.get_attribute('id'))
+   button=cards.nth(i).locator('button');button.click();self.assertEqual(button.get_attribute('aria-expanded'),'true');answer=cards.nth(i).locator('.faq-answer');self.assertTrue(answer.is_visible());self.assertEqual(button.get_attribute('aria-controls'),answer.get_attribute('id'));self.assertEqual(page.locator('.faq-trigger[aria-expanded="true"]').count(),1)
   rects=cards.evaluate_all('es=>es.map(e=>{const r=e.getBoundingClientRect();return {top:r.top,bottom:r.bottom}})')
   for prev,next in zip(rects,rects[1:]):self.assertGreaterEqual(next['top'],prev['bottom']+10)
   self.assertGreaterEqual(page.locator('.site-footer').bounding_box()['y'],rects[-1]['bottom'])
-  first=cards.first.locator('button');first.focus();page.keyboard.press('Enter');self.assertEqual(first.get_attribute('aria-expanded'),'false')
+  first=cards.first.locator('button');first.focus();page.keyboard.press('Enter');self.assertEqual(first.get_attribute('aria-expanded'),'true');page.keyboard.press('Space');self.assertEqual(first.get_attribute('aria-expanded'),'false')
  def test_contact_prefill_preserves_existing_message_and_footer_links(self):
   page=self.open();message=page.locator('#textareaMensagem');page.locator('[data-affiliate-interest]').first.click();self.assertIn('programa de afiliados',message.input_value())
   message.fill('Minha mensagem original');page.locator('[data-affiliate-interest]').first.click();self.assertEqual(message.input_value(),'Minha mensagem original')

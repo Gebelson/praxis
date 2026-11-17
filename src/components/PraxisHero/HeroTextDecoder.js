@@ -53,7 +53,8 @@ export class HeroTextDecoder {
     }
 
     // Accessible semantic labeling
-    this.title.setAttribute('aria-label', 'PROCURANDO UM SITE DE VERDADE?');
+    this.titleTexts=[this.line1.textContent.trim(),this.line2.textContent.trim()];
+    this.title.setAttribute('aria-label', this.titleTexts.join(' '));
 
     this.setupSlots();
 
@@ -118,8 +119,8 @@ export class HeroTextDecoder {
    * Initializes the DOM structure for both lines.
    */
   setupSlots() {
-    const slots1 = this.createLineSlots(this.line1, 'PROCURANDO UM SITE');
-    const slots2 = this.createLineSlots(this.line2, 'DE VERDADE?');
+    const slots1 = this.createLineSlots(this.line1, this.titleTexts[0]);
+    const slots2 = this.createLineSlots(this.line2, this.titleTexts[1]);
     this.slots = [...slots1, ...slots2];
   }
 

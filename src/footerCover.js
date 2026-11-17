@@ -10,7 +10,16 @@ export function initFooterCover(root) {
     if(reduced.matches){faq.style.removeProperty('transform');return;}
     const rect=footer.getBoundingClientRect();
     const scale=rect.width/(footer.offsetWidth||rect.width||1);
-    const overlap=Math.max(0,Math.min(innerHeight-rect.top,rect.height));
+    let overlap=Math.max(0,Math.min(innerHeight-rect.top,rect.height));
+    const opened=faq.querySelector('.faq-trigger[aria-expanded="true"]')?.closest('.faq-card');
+    if(opened){
+      const bounds=opened.getBoundingClientRect(),transform=getComputedStyle(faq).transform;
+      const shift=transform==='none'?0:new DOMMatrixReadOnly(transform).m42*scale;
+      const header=document.getElementById('siteHeader')?.getBoundingClientRect().bottom||0;
+      // Start the cover continuously once the open response clears the header.
+      // Never switch from zero directly to an already accumulated overlap.
+      overlap=Math.min(overlap,Math.max(0,header-(bounds.bottom-shift)));
+    }
     faq.style.transform=overlap?`translate3d(0,${overlap/scale}px,0)`:'';
   }
   function schedule(){if(!frame)frame=requestAnimationFrame(update);}
@@ -19,9 +28,10 @@ export function initFooterCover(root) {
   window.addEventListener('praxis:page-layout',schedule);
   reduced.addEventListener('change',schedule);
   const observer=new ResizeObserver(schedule);observer.observe(footer);observer.observe(faq);
+  faq.addEventListener('praxis:faq-reading',update);
   schedule();
   return ()=>{
-    destroyed=true;cancelAnimationFrame(frame);observer.disconnect();
+    destroyed=true;faq.removeEventListener('praxis:faq-reading',update);cancelAnimationFrame(frame);observer.disconnect();
     window.removeEventListener('scroll',schedule);window.removeEventListener('resize',schedule);
     window.removeEventListener('praxis:page-layout',schedule);reduced.removeEventListener('change',schedule);
     faq.style.removeProperty('transform');root.classList.remove('has-footer-cover');

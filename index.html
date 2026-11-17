@@ -3,6 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    // Size the existing artboard before CSS paints or the application arrives.
+    (() => {
+      const root = document.documentElement;
+      root.classList.add('praxis-booting');
+      const fit = () => {
+        const width = root.clientWidth || innerWidth;
+        const scale = width > 1024 ? width / 1440 : 1;
+        root.style.setProperty('--startup-scale', String(scale));
+        root.style.setProperty('--header-scale', String(scale));
+      };
+      fit();
+      addEventListener('resize', fit, {passive: true});
+      addEventListener('praxis:ready', () => {
+        removeEventListener('resize', fit);
+        root.classList.remove('praxis-booting');
+      }, {once: true});
+    })();
+  </script>
   <title>PRAXIS — Sites Sob Medida que Atraem Clientes Todos os Dias</title>
   <!-- Google Fonts: Sora para numeração monumental do Processo -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,6 +62,9 @@
             <li role="option" id="lang-opt-pt" aria-selected="true" data-lang="PORTUGUÊS(BR)" tabindex="0">PORTUGUÊS(BR)</li>
             <li role="option" id="lang-opt-en" aria-selected="false" data-lang="ENGLISH(US)" tabindex="-1">ENGLISH(US)</li>
             <li role="option" id="lang-opt-es" aria-selected="false" data-lang="ESPAÑOL(ES)" tabindex="-1">ESPAÑOL(ES)</li>
+            <li role="option" id="lang-opt-zh" aria-selected="false" data-lang="中文（简体）" tabindex="-1">中文（简体）</li>
+            <li role="option" id="lang-opt-fr" aria-selected="false" data-lang="FRANÇAIS(FR)" tabindex="-1">FRANÇAIS(FR)</li>
+            <li role="option" id="lang-opt-pt-PT" aria-selected="false" data-lang="PORTUGUÊS(PT)" tabindex="-1">PORTUGUÊS(PT)</li>
           </ul>
         </div>
     </div>
@@ -187,7 +209,7 @@
                 <svg viewBox="0 0 24 24" width="22" height="22" fill="#F1ECE6"><path d="M12 1.5l3.09 6.26L22 8.77l-5 4.87 1.18 6.88L12 17.27l-6.18 3.25L7 13.64 2 8.77l6.91-1.01L12 1.5z"/></svg>
               </div>
             </div>
-            <p class="rating-caption">Trusted Web Design Service Worldwide</p>
+            <p class="rating-caption">Serviço de confiança em todo o mundo</p>
           </div>
         </div>
       </div>
@@ -263,8 +285,18 @@
       </div>
       <div class="devmode-container">
       <h2 class="devmode-headline">
-        VOCÊ <em class="serif-italic">nunca viu</em> ISSO ANTES
+        VOCÊ <em class="serif-italic">nunca viu</em> <span class="devmode-ending-desktop">ISSO ANTES</span><span class="devmode-ending-mobile">ISSO</span>
       </h2>
+
+      <div class="devmode-right-frame">
+        <img
+          src="/assets/devmode-cms.png"
+          alt="Interface do painel Dev Mode CMS"
+          class="devmode-cms-img"
+          width="589"
+          height="566"
+        />
+      </div>
 
       <div class="devmode-left">
         <h3 class="devmode-title">Dev Mode</h3>
@@ -431,15 +463,7 @@
         </div>
       </div>
 
-      <div class="devmode-right-frame">
-        <img
-          src="/assets/devmode-cms.png"
-          alt="Interface do painel Dev Mode CMS"
-          class="devmode-cms-img"
-          width="589"
-          height="566"
-        />
-      </div>
+
       </div>
     </section>
 
@@ -557,7 +581,7 @@
             <span class="cta-h-line2">UM SITE <em class="serif-italic">de verdade?</em></span>
           </h2>
           <p class="cta-banner-subtitle">
-            Seu negócio já é forte. Seu site não pode ser mediano.<br/>
+            <span class="cta-copy-lead">Seu negócio já é forte. Seu site não pode ser mediano.</span><br/>
             Trabalhe com quem projeta padrão global — design estratégico, direto ao<br/>
             ponto, pensado para posicionar sua marca e converter de verdade.
           </p>
@@ -588,71 +612,59 @@
       </div>
 
       <h2 class="testimonials-heading">
-        <span class="test-h-line1">O QUE OS CLIENTES DIZEM</span>
-        <span class="test-h-line2">SOBRE <em class="serif-italic">trabalhar</em> COMIGO</span>
+        <span class="test-title-desktop"><span class="test-h-line1">O QUE OS CLIENTES DIZEM</span><span class="test-h-line2">SOBRE <em class="serif-italic">trabalhar</em> COMIGO</span></span>
+        <span class="test-title-mobile"><span class="test-h-line1">O QUE OS CLIENTES</span><span class="test-h-line1">DIZEM SOBRE</span><span class="test-h-line2"><em class="serif-italic">trabalhar</em> COMIGO</span></span>
       </h2>
 
       <div class="testimonials-grid">
         <article class="testimonial-card t-card-1">
           <blockquote class="testimonial-quote">
-            “LOREM IPSUM DOLOR SIT AMET, 
-            CONSECTETUR ADIPISCING ELIT, 
-            SED DO EIUSMOD TEMPOR 
-            INCIDIDUNT UT LABORE ET”
+            “UM SITE QUE TRADUZ A IDENTIDADE DA MARCA E APRESENTA SEUS SERVIÇOS COM CLAREZA.”
           </blockquote>
           <div class="testimonial-author">
             <img src="/assets/client-portraits/portrait-01.jpg" alt="Retrato ilustrativo" class="testimonial-avatar" width="68" height="68" />
             <div class="testimonial-author-meta">
-              <strong class="author-name">Lorem Ipsum</strong>
-              <span class="author-role">Lorem Ipsum</span>
+              <strong class="author-name">Identidade da marca</strong>
+              <span class="author-role">Exemplo ilustrativo</span>
             </div>
           </div>
         </article>
 
         <article class="testimonial-card t-card-2">
           <blockquote class="testimonial-quote">
-            “LOREM IPSUM DOLOR SIT AMET, 
-            CONSECTETUR ADIPISCING ELIT, 
-            SED DO EIUSMOD TEMPOR 
-            INCIDIDUNT UT LABORE ET”
+            “UMA NAVEGAÇÃO SIMPLES, QUE AJUDA CADA PESSOA A ENCONTRAR O QUE PRECISA E DAR O PRÓXIMO PASSO.”
           </blockquote>
           <div class="testimonial-author">
             <img src="/assets/client-portraits/portrait-02.jpg" alt="Retrato ilustrativo" class="testimonial-avatar" width="68" height="68" />
             <div class="testimonial-author-meta">
-              <strong class="author-name">Lorem Ipsum</strong>
-              <span class="author-role">Lorem Ipsum</span>
+              <strong class="author-name">Navegação intuitiva</strong>
+              <span class="author-role">Exemplo ilustrativo</span>
             </div>
           </div>
         </article>
 
         <article class="testimonial-card t-card-3">
           <blockquote class="testimonial-quote">
-            “LOREM IPSUM DOLOR SIT AMET, 
-            CONSECTETUR ADIPISCING ELIT, 
-            SED DO EIUSMOD TEMPOR 
-            INCIDIDUNT UT LABORE ET”
+            “LIBERDADE PARA ATUALIZAR CONTEÚDOS E MANTER O SITE NO RITMO DO NEGÓCIO.”
           </blockquote>
           <div class="testimonial-author">
             <img src="/assets/client-portraits/portrait-03.jpg" alt="Retrato ilustrativo" class="testimonial-avatar" width="68" height="68" />
             <div class="testimonial-author-meta">
-              <strong class="author-name">Lorem Ipsum</strong>
-              <span class="author-role">Lorem Ipsum</span>
+              <strong class="author-name">Autonomia no dia a dia</strong>
+              <span class="author-role">Exemplo ilustrativo</span>
             </div>
           </div>
         </article>
 
         <article class="testimonial-card t-card-4">
           <blockquote class="testimonial-quote">
-            “LOREM IPSUM DOLOR SIT AMET, 
-            CONSECTETUR ADIPISCING ELIT, 
-            SED DO EIUSMOD TEMPOR 
-            INCIDIDUNT UT LABORE ET”
+            “DO PRIMEIRO CONTATO À ENTREGA, UM PROCESSO CLARO PARA TRANSFORMAR IDEIAS EM PRESENÇA DIGITAL.”
           </blockquote>
           <div class="testimonial-author">
             <img src="/assets/client-portraits/portrait-04.jpg" alt="Retrato ilustrativo" class="testimonial-avatar" width="68" height="68" />
             <div class="testimonial-author-meta">
-              <strong class="author-name">Lorem Ipsum</strong>
-              <span class="author-role">Lorem Ipsum</span>
+              <strong class="author-name">Um processo claro</strong>
+              <span class="author-role">Exemplo ilustrativo</span>
             </div>
           </div>
         </article>
@@ -751,9 +763,7 @@
         </div>
 
         <h3 class="form-intro-title">
-          Lorem ipsum dolor sit<br/>
-          amet, consectetur<br/>
-          adipiscing elit, sed do
+          Conte sua ideia. Vamos encontrar o melhor caminho para o seu site.
         </h3>
 
         <!-- Linha 1: Nome & Email -->
@@ -904,7 +914,7 @@
     <section id="afiliados" class="sec-affiliates" aria-label="Programa de Afiliados">
       <div class="affiliates-top">
         <h2 class="affiliates-heading">
-          <span class="aff-h-line1">TENHA UMA RENDA EXTRA</span>
+          <span class="aff-h-line1"><span class="aff-title-desktop">TENHA UMA RENDA EXTRA</span><span class="aff-title-mobile">RENDA EXTRA</span></span>
           <span class="aff-h-line2">APENAS <em class="serif-italic">indicando</em></span>
         </h2>
 

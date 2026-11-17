@@ -6,7 +6,8 @@ export class HeroCopyDecoder {
     this.motion=matchMedia('(prefers-reduced-motion: reduce)');
     element.textContent='';
     const accessible=document.createElement('span');accessible.className='visually-hidden';accessible.textContent=this.original;element.append(accessible);
-    for(const token of this.original.split(/(\s+)/)){
+    const tokens=document.documentElement.lang.startsWith('zh')?(typeof Intl.Segmenter==='function'?Array.from(new Intl.Segmenter('zh-CN',{granularity:'word'}).segment(this.original),item=>item.segment):Array.from(this.original)):this.original.split(/(\s+)/);
+    for(const token of tokens){
       if(!token.trim()){element.append(document.createTextNode(token));continue;}
       const word=document.createElement('span');word.className='hero-copy-word';word.setAttribute('aria-hidden','true');
       const ghost=document.createElement('span');ghost.className='hero-copy-ghost';ghost.textContent=token;
