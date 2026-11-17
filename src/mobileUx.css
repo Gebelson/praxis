@@ -5,6 +5,9 @@
 .skip-content-link {position:fixed;z-index:1100;left:16px;top:8px;transform:translateY(-160%);padding:12px 18px;color:#f3ede6;background:#1e1e1c;border-radius:8px;}
 .skip-content-link:focus {transform:none;outline:2px solid #f3ede6;outline-offset:2px;}
 @media(max-width:1024px){
+  html,body {scrollbar-width:none;}
+  html::-webkit-scrollbar,body::-webkit-scrollbar {display:none;}
+  body .page-scrollbar {display:none;}
   html {scroll-padding-top:88px;}
   .site-header {padding:calc(10px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));min-height:64px;}
   .site-header .site-header-inner {display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:center;}
@@ -43,12 +46,16 @@
   .sec2-social-proof .avatars-stack {max-width:100%;}
   .sec-portfolio {padding-bottom:48px;overflow:visible;clip-path:inset(-80px 0 0);}
   .sec-portfolio .portfolio-wall.projects-gallery {overflow:visible;clip-path:inset(-80px 0 -20px);}
-  .portfolio-carousel .carousel-arrow {width:46px;height:46px;}
+  .portfolio-carousel {--mobile-project-height:min(64svh,calc(100svh - 300px),600px);--mobile-project-width:calc(var(--mobile-project-height) * 9 / 16);}
+  .portfolio-carousel .carousel-3d-viewport {height:calc(var(--mobile-project-height) + 24px);min-height:0;aspect-ratio:auto;}
+  .portfolio-carousel .carousel-slide {top:12px;left:calc((100% - var(--mobile-project-width)) / 2);width:var(--mobile-project-width);height:var(--mobile-project-height);}
+  .portfolio-carousel .carousel-arrow {width:46px;height:46px;top:calc(var(--mobile-project-height) / 2 + 12px);}
   .carousel-dots .carousel-dot {position:relative;width:28px;height:44px;border:0;background:transparent;flex:0 0 28px;}
   .carousel-dots .carousel-dot::before {content:'';position:absolute;width:8px;height:8px;left:10px;top:18px;border:1.2px solid #1e1e1c;border-radius:50%;box-sizing:border-box;}
   .carousel-dots .carousel-dot.is-active {background:transparent;}
   .carousel-dots .carousel-dot.is-active::before {background:#1e1e1c;}
   .carousel-dots {gap:0;}
+  .sec-devmode {padding-block:80px;}
   .devmode-ending-desktop {display:none;}
   .devmode-ending-mobile {display:inline;}
   .sec-devmode .devmode-description {font-size:16px;line-height:1.6;}

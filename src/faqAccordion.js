@@ -1,7 +1,7 @@
 export function initFaqAccordion(root,{onLayout=()=>{}}={}){
   if(!root)return;
   const reduced=matchMedia('(prefers-reduced-motion: reduce)'),items=[];
-  const originalPaddingBottom=root.style.paddingBottom;
+  const originalPaddingBottom=root.style.paddingBottom,originalMinHeight=root.style.minHeight;
   let frame=0,snapFrame=0,destroyed=false;
   const update=()=>{frame=0;if(destroyed)return;onLayout();if(items.some(item=>item.animation))frame=requestAnimationFrame(update);};
   const schedule=()=>{if(!frame)frame=requestAnimationFrame(update);};
@@ -19,6 +19,7 @@ export function initFaqAccordion(root,{onLayout=()=>{}}={}){
     };
     const snap=()=>{
       cancelAnimationFrame(snapFrame);
+      root.style.minHeight=originalMinHeight;
       root.style.paddingBottom=originalPaddingBottom;
       root.dispatchEvent(new Event('praxis:faq-reading'));
       const rect=card.getBoundingClientRect(),header=Math.max(0,document.getElementById('siteHeader')?.getBoundingClientRect().bottom||0);
@@ -39,6 +40,9 @@ export function initFaqAccordion(root,{onLayout=()=>{}}={}){
     };
     item.click=()=>{
       const open=trigger.getAttribute('aria-expanded')!=='true';
+      // Keep the footer at its reading position throughout the last cards' close.
+      // A new opening recomputes this reserve from the natural section layout.
+      if(!open&&items.indexOf(item)>=items.length-2)root.style.minHeight=`${root.offsetHeight}px`;
       if(open)for(const other of items){if(other!==item&&other.trigger.getAttribute('aria-expanded')==='true')other.click();}
       const current=answer.hidden?null:getComputedStyle(answer);
       const from=current?{height:current.height,paddingBottom:current.paddingBottom,opacity:current.opacity,transform:current.transform}:{height:'0px',paddingBottom:'0px',opacity:0,transform:'translateY(-6px)'};
@@ -57,6 +61,6 @@ export function initFaqAccordion(root,{onLayout=()=>{}}={}){
   }
   const preference=()=>{if(reduced.matches)items.forEach(item=>item.animation?.finish());};
   reduced.addEventListener('change',preference);
-  const api={destroy(){destroyed=true;root.style.paddingBottom=originalPaddingBottom;cancelAnimationFrame(frame);cancelAnimationFrame(snapFrame);reduced.removeEventListener('change',preference);for(const item of items){item.trigger.removeEventListener('click',item.click);if(item.animation){item.animation.onfinish=null;item.animation.cancel();}item.answer.hidden=item.trigger.getAttribute('aria-expanded')!=='true';item.answer.style.overflow='';}}};
+  const api={destroy(){destroyed=true;root.style.paddingBottom=originalPaddingBottom;root.style.minHeight=originalMinHeight;cancelAnimationFrame(frame);cancelAnimationFrame(snapFrame);reduced.removeEventListener('change',preference);for(const item of items){item.trigger.removeEventListener('click',item.click);if(item.animation){item.animation.onfinish=null;item.animation.cancel();}item.answer.hidden=item.trigger.getAttribute('aria-expanded')!=='true';item.answer.style.overflow='';}}};
   import.meta.hot?.dispose(()=>api.destroy());return api;
 }

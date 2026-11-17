@@ -29,7 +29,11 @@ export function initProcessSection() {
     const step=steps[Math.max(0,index)],title=step.querySelector('.process-step-title').getBoundingClientRect(),body=step.querySelector('.process-step-body').getBoundingClientRect();
     const contentHeight=body.bottom-title.top;
     const header=Math.max(0,document.getElementById('siteHeader')?.getBoundingClientRect().bottom||0);
-    const top=header+Math.max(12,(innerHeight-header-sticky.offsetHeight-24-contentHeight)/2);
+    const viewportHeight=document.getElementById('inicio')?.praxisHero?.mobileViewportHeight||innerHeight;
+    const referenceTitle=steps[0].querySelector('.process-step-title').getBoundingClientRect();
+    const referenceBody=steps[0].querySelector('.process-step-body').getBoundingClientRect();
+    const referenceHeight=referenceBody.bottom-referenceTitle.top;
+    const top=header+Math.max(12,(viewportHeight-header-sticky.offsetHeight-24-referenceHeight)/2);
     return {top,contentCenter:top+sticky.offsetHeight+24+contentHeight/2};
   }
   function mobileTargets(){

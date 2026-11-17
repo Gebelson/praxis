@@ -3,11 +3,18 @@ export function initCarouselSnap(container) {
   if(container.carouselSnap)return container.carouselSnap;
   const motion=matchMedia('(prefers-reduced-motion: reduce)');
   const duration=340,ease=t=>t*t*t*(t*(6*t-15)+10);
-  let timer=0,frame=0,running=false,latched=false,destroyed=false,smoother=null,generation=0;
+  let timer=0,frame=0,running=false,latched=false,destroyed=false,smoother=null,generation=0,touchActive=false;
   const detachNavigation=onSectionNavigationStart(()=>{stop();latched=true;});
   function target(){
     const slide=container.querySelector('.carousel-slide.is-active');if(!slide)return null;
     const r=slide.getBoundingClientRect(),headerBottom=Math.max(0,document.querySelector('header')?.getBoundingClientRect().bottom||0);
+    if(innerWidth<=1024){
+      const title=container.parentElement.querySelector('.portfolio-watermark')?.getBoundingClientRect();
+      const bottom=container.getBoundingClientRect().bottom;
+      const top=title?.top??r.top,height=bottom-top;
+      const destinationTop=headerBottom+Math.max(12,(innerHeight-headerBottom-height)/2);
+      return {distance:top-destinationTop,visible:bottom>headerBottom&&top<innerHeight,threshold:Math.min(180,Math.max(80,innerHeight*.18))};
+    }
     const scale=innerWidth>1024?document.documentElement.clientWidth/1440:1;
     return {distance:r.top-headerBottom-14*scale,visible:r.bottom>headerBottom&&r.top<innerHeight,threshold:Math.min(140,Math.max(60,innerHeight*.12))};
   }
@@ -17,11 +24,12 @@ export function initCarouselSnap(container) {
     if(running&&smoother)smoother.scrollTo(smoother.scroll,{immediate:true});running=false;smoother=null;
   }
   function interrupt(event){
+    if(event?.type==='touchstart'||event?.type==='touchmove')touchActive=true;
     if(event?.type==='keydown'&&!['ArrowUp','ArrowDown','PageUp','PageDown','Home','End',' '].includes(event.key))return;
     const wasRunning=running;stop();if(wasRunning){latched=true;state('interrupted');}
   }
   function settle(){
-    timer=0;if(isSectionNavigationActive()){latched=true;return;}if(destroyed||running||container.querySelector('.is-dragging'))return;
+    timer=0;if(isSectionNavigationActive()){latched=true;return;}if(destroyed||running||touchActive||container.querySelector('.is-dragging'))return;
     const t=target();if(!t||!t.visible)return;
     if(motion.matches){if(!latched&&Math.abs(t.distance)<2){latched=true;state('settled');}return;}
     if(Math.abs(t.distance)>t.threshold*1.8)latched=false;
@@ -51,13 +59,16 @@ export function initCarouselSnap(container) {
     const t=target();if(t&&Math.abs(t.distance)>t.threshold*1.8){if(latched)state(motion.matches?'disabled':'idle');latched=false;}
     clearTimeout(timer);timer=setTimeout(settle,t?.visible&&!latched&&Math.abs(t.distance)<=t.threshold?0:45);
   }
+  function touchEnd(){touchActive=false;scroll();}
   function preference(){stop();latched=false;state(motion.matches?'disabled':'idle');}
   window.addEventListener('scroll',scroll,{passive:true});
   for(const type of ['wheel','touchstart','touchmove','pointerdown','keydown'])window.addEventListener(type,interrupt,{passive:true,capture:true});
+  window.addEventListener('touchend',touchEnd,{passive:true});window.addEventListener('touchcancel',touchEnd,{passive:true});
   window.addEventListener('resize',preference,{passive:true});motion.addEventListener('change',preference);
   const api={destroy(){
     destroyed=true;detachNavigation();stop();window.removeEventListener('scroll',scroll);
     for(const type of ['wheel','touchstart','touchmove','pointerdown','keydown'])window.removeEventListener(type,interrupt,true);
+    window.removeEventListener('touchend',touchEnd);window.removeEventListener('touchcancel',touchEnd);
     window.removeEventListener('resize',preference);motion.removeEventListener('change',preference);delete container.carouselSnap;delete container.dataset.carouselSnap;
   }};
   container.carouselSnap=api;state(motion.matches?'disabled':'idle');import.meta.hot?.dispose(()=>api.destroy());return api;
